@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 function flattenAndRename(collection) {
-  // Prima rinomina tutte le richieste
+  // Rename all requests
   function renameRequests(items) {
     items.forEach(item => {
       if (item.request) {
@@ -45,8 +45,7 @@ function flattenAndRename(collection) {
   return collection;
 }
 
-// Usa lo script
-const collection = JSON.parse(fs.readFileSync('./**your-path**/postman-collection.json', 'utf8'));
+const collection = JSON.parse(fs.readFileSync('./**path**/postman-collection.json', 'utf8'));
 const processed = flattenAndRename(collection);
 fs.writeFileSync('processed-postman-collection.json', JSON.stringify(processed, null, 2));
 

@@ -15,6 +15,8 @@ Un tool per convertire specifiche OpenAPI in collezioni Postman con una struttur
 npm install -g openapi-to-postman
 ```
 
+Assicurati di avere Node.js installato nel tuo sistema.
+
 ## 🚀 Installazione
 
 Clona il repository:
@@ -26,54 +28,39 @@ npm install
 
 ## 💻 Utilizzo
 
-### Metodo 1: Script standalone
+### Flusso completo: da OpenAPI a Postman Collection
 
-1. Converti la tua specifica OpenAPI in collezione Postman:
+1. **Converti la specifica OpenAPI in collezione Postman:**
 ```bash
-openapi2postmanv2 -s api-spec.yaml -o collection.json
+openapi2postmanv2 -s open-api.json -o postman-collection.json -p requestNameSource=URL
 ```
 
-2. Processa la collezione:
+2. **Processa la collezione con lo script di appiattimento:**
 ```bash
-node process-collection.js
+node collectionflatter.js
 ```
 
-Il file processato sarà salvato come `collection-processed.json`.
+Il file processato sarà salvato come `processed-postman-collection.json`.
 
-### Metodo 2: Conversione e processamento integrati
+### Parametri del comando di conversione
 
-```javascript
-const Converter = require('openapi-to-postman');
-const fs = require('fs');
+- `-s, --spec`: File di input OpenAPI (es. `open-api.json`, `api.yaml`)
+- `-o, --output`: File di output della collezione Postman (es. `postman-collection.json`)
+- `-p, --parameter`: Parametri di configurazione (es. `requestNameSource=URL`)
 
-const options = {
-  folderStrategy: 'Tags'
-};
+### Opzioni disponibili per `-p`
 
-Converter.convert(
-  { type: 'file', data: 'api-spec.yaml' },
-  options,
-  (err, result) => {
-    if (result.result) {
-      const collection = result.output[0].data;
-      const processed = flattenAndRename(collection);
-      fs.writeFileSync('collection.json', JSON.stringify(processed, null, 2));
-      console.log('✅ Collection creata e processata!');
-    } else {
-      console.error('❌ Errore nella conversione:', err);
-    }
-  }
-);
-
-// Includi qui la funzione flattenAndRename
+```bash
+requestNameSource=URL      # Usa l'URL come nome della richiesta (consigliato)
+requestNameSource=Fallback # Usa fallback se non disponibile
 ```
 
 ## 📖 Come funziona
 
-Lo script esegue due operazioni principali:
+Lo script `collectionflatter.js` esegue due operazioni principali sulla collezione Postman:
 
 ### 1. Rename delle richieste
-Trasforma i nomi delle richieste da summary (es. "Get user summary") a path con metodo HTTP:
+Trasforma i nomi delle richieste usando il path con metodo HTTP:
 ```
 GET /feedback/manager/summary/{userId}
 POST /auth/login
@@ -81,7 +68,7 @@ DELETE /user/{id}
 ```
 
 ### 2. Flatten della struttura
-Riduce la gerarchia di cartelle da questa struttura eccessivamente nidificata:
+Riduce la gerarchia di cartelle da una struttura eccessivamente nidificata:
 ```
 feedback/
   └── manager/
@@ -134,14 +121,14 @@ const options = {
 ## 📝 Esempio completo
 
 ```bash
-# 1. Converti OpenAPI
-openapi2postmanv2 -s my-api.yaml -o collection.json
+# 1. Converti OpenAPI a Postman Collection
+openapi2postmanv2 -s my-api.yaml -o postman-collection.json -p requestNameSource=URL
 
-# 2. Processa
-node process-collection.js
+# 2. Processa e appiattisci la collezione
+node collectionflatter.js
 
 # 3. Importa in Postman
-# File → Import → collection-processed.json
+# File → Import → processed-postman-collection.json
 ```
 
 ## 🤝 Contribuire
