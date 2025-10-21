@@ -1,0 +1,24 @@
+{
+  "name": "postman-collection-flatter",
+  "version": "1.0.0",
+  "description": "A tool for converting OpenAPI specifications into Postman collections with a clean and organized structure, reducing excessive nesting and using paths as request names.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Moldaviano/postman-collection-flatter.git"
+  },
+  "keywords": [
+    "postman",
+    "flatter",
+    "openapi"
+  ],
+  "author": "m8",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Moldaviano/postman-collection-flatter/issues"
+  },
+  "homepage": "https://github.com/Moldaviano/postman-collection-flatter#readme"
+}
